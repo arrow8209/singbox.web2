@@ -1,5 +1,6 @@
 # Build output
 /singbox-web
+/singbox.arrow.web2
 *.exe
 
 # Data directory

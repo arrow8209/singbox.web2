@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"time"
 
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/storage"
 )
 
 // RecoverFromCrash attempts to recover sing-box state after web service restart

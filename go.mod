@@ -1,4 +1,4 @@
-module singbox-web
+module singbox.arrow.web2
 
 go 1.25.1
 

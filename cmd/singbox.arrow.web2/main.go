@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"singbox-web/internal/api"
-	"singbox-web/internal/api/handlers"
-	"singbox-web/internal/core/singbox"
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/api"
+	"singbox.arrow.web2/internal/api/handlers"
+	"singbox.arrow.web2/internal/core/singbox"
+	"singbox.arrow.web2/internal/storage"
 )
 
 func main() {
@@ -50,7 +50,7 @@ func main() {
 	r := api.SetupRouter()
 
 	// Start server
-	log.Printf("singbox-web starting on http://localhost:%s", port)
+	log.Printf("singbox.arrow.web2 starting on http://localhost:%s", port)
 	if err := r.Run(fmt.Sprintf(":%s", port)); err != nil {
 		log.Fatal(err)
 	}

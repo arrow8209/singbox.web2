@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"singbox-web/internal/api/handlers"
-	"singbox-web/internal/api/middleware"
+	"singbox.arrow.web2/internal/api/handlers"
+	"singbox.arrow.web2/internal/api/middleware"
 )
 
 func SetupRouter() *gin.Engine {

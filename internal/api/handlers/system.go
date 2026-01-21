@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"singbox-web/internal/core/singbox"
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/core/singbox"
+	"singbox.arrow.web2/internal/storage"
 )
 
 var singboxManager *singbox.Manager

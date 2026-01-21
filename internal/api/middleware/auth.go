@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/storage"
 )
 
 type Claims struct {

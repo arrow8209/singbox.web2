@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/storage"
 )
 
 type Status string

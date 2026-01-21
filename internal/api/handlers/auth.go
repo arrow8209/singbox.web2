@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
-	"singbox-web/internal/api/middleware"
-	"singbox-web/internal/storage"
+	"singbox.arrow.web2/internal/api/middleware"
+	"singbox.arrow.web2/internal/storage"
 )
 
 type LoginRequest struct {
