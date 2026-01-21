@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-card class="login-card">
       <template #header>
-        <h2>singbox-web</h2>
+        <h2>Singbox Web 管理</h2>
       </template>
       <el-form
         ref="formRef"
@@ -11,14 +11,14 @@
         label-position="top"
         @submit.prevent="handleLogin"
       >
-        <el-form-item label="Username" prop="username">
-          <el-input v-model="form.username" placeholder="Enter username" />
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
-        <el-form-item label="Password" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input
             v-model="form.password"
             type="password"
-            placeholder="Enter password"
+            placeholder="请输入密码"
             show-password
           />
         </el-form-item>
@@ -29,7 +29,7 @@
             :loading="loading"
             class="login-button"
           >
-            Login
+            登录
           </el-button>
         </el-form-item>
       </el-form>
@@ -54,8 +54,8 @@ const form = reactive({
 })
 
 const rules: FormRules = {
-  username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
-  password: [{ required: true, message: 'Please enter password', trigger: 'blur' }],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 }
 
 async function handleLogin() {
@@ -67,7 +67,7 @@ async function handleLogin() {
     loading.value = true
     try {
       await userStore.login(form)
-      ElMessage.success('Login successful')
+      ElMessage.success('登录成功')
       router.push('/')
     } catch (error) {
       // Error handled by interceptor
@@ -84,16 +84,18 @@ async function handleLogin() {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f5f7fa;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .login-card {
   width: 400px;
+  border-radius: 8px;
 }
 
 .login-card h2 {
   margin: 0;
   text-align: center;
+  color: #303133;
 }
 
 .login-button {

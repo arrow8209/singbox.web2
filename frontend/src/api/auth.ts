@@ -10,6 +10,11 @@ export interface LoginResponse {
   username: string
 }
 
+export interface ChangePasswordRequest {
+  old_password: string
+  new_password: string
+}
+
 export const authApi = {
   login(data: LoginRequest) {
     return api.post<LoginResponse>('/auth/login', data)
@@ -17,10 +22,7 @@ export const authApi = {
   logout() {
     return api.post('/auth/logout')
   },
-  changePassword(oldPassword: string, newPassword: string) {
-    return api.put('/auth/password', {
-      old_password: oldPassword,
-      new_password: newPassword,
-    })
+  changePassword(data: ChangePasswordRequest) {
+    return api.put('/auth/password', data)
   },
 }

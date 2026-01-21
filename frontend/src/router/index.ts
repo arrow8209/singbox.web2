@@ -11,9 +11,50 @@ const router = createRouter({
     },
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/views/HomeView.vue'),
+      component: () => import('@/layouts/MainLayout.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: '',
+          redirect: '/dashboard',
+        },
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component: () => import('@/views/DashboardView.vue'),
+          meta: { title: '仪表盘' },
+        },
+        {
+          path: 'inbounds',
+          name: 'inbounds',
+          component: () => import('@/views/InboundsView.vue'),
+          meta: { title: '入站管理' },
+        },
+        {
+          path: 'subscriptions',
+          name: 'subscriptions',
+          component: () => import('@/views/SubscriptionsView.vue'),
+          meta: { title: '订阅管理' },
+        },
+        {
+          path: 'outbounds',
+          name: 'outbounds',
+          component: () => import('@/views/OutboundsView.vue'),
+          meta: { title: '出站管理' },
+        },
+        {
+          path: 'rulesets',
+          name: 'rulesets',
+          component: () => import('@/views/RulesetsView.vue'),
+          meta: { title: '规则集' },
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('@/views/SettingsView.vue'),
+          meta: { title: '系统设置' },
+        },
+      ],
     },
   ],
 })
@@ -24,7 +65,7 @@ router.beforeEach((to, _from, next) => {
   if (to.meta.requiresAuth !== false && !token) {
     next('/login')
   } else if (to.path === '/login' && token) {
-    next('/')
+    next('/dashboard')
   } else {
     next()
   }

@@ -27,3 +27,4 @@ coverage.out
 # Temp
 *.tmp
 *.log
+/tmp/
