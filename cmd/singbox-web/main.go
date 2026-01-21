@@ -3,19 +3,44 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
+	"os"
+	"path/filepath"
+
+	"singbox-web/internal/api"
+	"singbox-web/internal/storage"
 )
 
 func main() {
-	port := 60017
+	// Get data directory
+	dataDir := "data"
 
-	http.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"status":"ok"}`))
-	})
+	// Use executable directory for production
+	if os.Getenv("DEV") != "1" {
+		execPath, err := os.Executable()
+		if err == nil {
+			dataDir = filepath.Join(filepath.Dir(execPath), "data")
+		}
+	}
 
-	log.Printf("singbox-web starting on port %d", port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil); err != nil {
+	log.Printf("Using data directory: %s", dataDir)
+
+	// Initialize database
+	if err := storage.InitDatabase(dataDir); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
+
+	// Get port from settings
+	port, err := storage.GetSetting("web_port")
+	if err != nil {
+		port = "60017"
+	}
+
+	// Setup router
+	r := api.SetupRouter()
+
+	// Start server
+	log.Printf("singbox-web starting on http://localhost:%s", port)
+	if err := r.Run(fmt.Sprintf(":%s", port)); err != nil {
 		log.Fatal(err)
 	}
 }
