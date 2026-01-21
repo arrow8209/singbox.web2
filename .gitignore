@@ -1,0 +1,28 @@
+# Build output
+/singbox-web
+*.exe
+
+# Data directory
+/data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+/frontend/node_modules/
+/frontend/dist/
+
+# Test
+coverage.out
+*.test
+
+# Temp
+*.tmp
+*.log

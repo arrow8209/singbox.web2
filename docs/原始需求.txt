@@ -1,0 +1,13 @@
+1.制作一个singbox的web客户端。
+2.运行在x64的linux系统。
+3.支持多种入站设置
+4.支持导读订阅链接出站设置
+5.拥有Gui.for.singbox 的规则集功能，并可以通过规则集中心下载各种规则
+6.可是设置计划任务，定时更新订阅和规则集
+7.运行在中转服务器上，对流量进行二次分流
+8.运行在路由器上，对流量进行二次分流
+9.自动下载singbox
+
+参考项：
+https://github.com/GUI-for-Cores/GUI.for.SingBox
+https://github.com/alireza0/s-ui
