@@ -11,8 +11,16 @@ singbox-web 是一个 sing-box 的 Web 管理客户端，运行在 x64 Linux 系
 | 阶段 | 场景 | 核心功能 |
 |------|------|---------|
 | 第一阶段 | 中转服务器 | 链式代理，流量中转到不同落地节点 |
-| 第二阶段 | 路由器 | 分流网关，局域网流量分配到不同出口 |
-| 第三阶段 | 个人本地代理 | 本地科学上网，类似 Clash Verge |
+| 第二阶段 | 个人本地代理 | 本地科学上网，类似 Clash Verge |
+| 第三阶段 | 路由器 | 分流网关，局域网流量分配到不同出口 |
+
+## 默认配置
+
+| 配置项 | 默认值 |
+|-------|-------|
+| Web 访问端口 | 60017 |
+| 初始用户名 | admin |
+| 初始密码 | 123 |
 
 ## 技术栈
 
@@ -64,6 +72,14 @@ singbox-web 是一个 sing-box 的 Web 管理客户端，运行在 x64 Linux 系
 
 ```sql
 -- 系统配置
+-- 存储内容包括：
+--   web_port: Web 服务端口 (默认 60017)
+--   username: 用户名
+--   password_hash: 密码哈希
+--   jwt_secret: JWT 密钥
+--   singbox_path: sing-box 二进制路径
+--   download_proxy_enabled: 下载代理开关 (true/false)
+--   download_proxy_url: 下载代理地址 (如 http://127.0.0.1:7890 或 socks5://127.0.0.1:1080)
 CREATE TABLE settings (
     key         TEXT PRIMARY KEY,
     value       TEXT,
@@ -267,7 +283,7 @@ CREATE TABLE runtime_state (
 | 实时日志 | WebSocket 推送、级别过滤、关键字搜索 |
 | 操作记录 | 系统操作历史、分页查询 |
 | 流量统计 | 按节点/规则统计、图表展示 |
-| 系统设置 | 账户密码、sing-box 路径、自动下载/升级 |
+| 系统设置 | 账户密码、sing-box 路径、自动下载/升级、下载代理配置 |
 
 ### 规则集页面设计
 
@@ -406,6 +422,38 @@ func (m *SingBoxManager) Logs()    // 返回日志 channel，供 WebSocket 推�
 - 保留最近 10 份备份，自动清理旧备份
 - 前端提供「恢复历史配置」功能
 
+## 下载代理配置
+
+下载 sing-box 二进制、订阅、规则集等网络资源时，可能需要通过代理访问。系统提供统一的下载代理配置。
+
+### 配置项
+
+| 配置项 | 说明 | 示例 |
+|-------|------|------|
+| download_proxy_enabled | 是否启用下载代理 | true / false |
+| download_proxy_url | 代理服务器地址 | http://127.0.0.1:7890 |
+
+### 支持的代理协议
+
+- HTTP 代理：`http://host:port`
+- HTTPS 代理：`https://host:port`
+- SOCKS5 代理：`socks5://host:port`
+
+### 应用场景
+
+以下操作会使用下载代理（如果启用）：
+1. 自动下载/升级 sing-box 二进制
+2. 刷新订阅（拉取订阅 URL）
+3. 下载/更新规则集
+4. 从规则中心下载规则集
+
+### 前端界面
+
+在「系统设置」页面提供：
+- 下载代理开关（启用/禁用）
+- 代理地址输入框
+- 测试连接按钮（验证代理可用性）
+
 ## 定时任务设计
 
 ```
@@ -509,11 +557,12 @@ singbox-web/
 ### 必须实现
 
 **系统核心：**
-- 单用户登录认证
+- 单用户登录认证（初始账号 admin/123）
 - sing-box 自动下载
 - sing-box 进程管理（启动/停止/重启）
 - 崩溃恢复机制
 - 配置备份
+- 下载代理配置（支持 HTTP/HTTPS/SOCKS5 代理）
 
 **入站管理：**
 - Shadowsocks / VMess / Trojan / VLESS 入站
@@ -544,8 +593,15 @@ singbox-web/
 
 ### 可延后
 
-- HTTP / SOCKS5 / Mixed 入站（本地代理场景用）
-- TProxy / TUN 入站（路由器场景用）
+**第二阶段（个人本地代理）：**
+- HTTP / SOCKS5 / Mixed 入站
+- TUN 入站（系统全局代理）
+
+**第三阶段（路由器）：**
+- TProxy 入站（透明代理）
+- 局域网设备管理
+
+**其他：**
 - 流量统计图表
 - 深色模式
 
