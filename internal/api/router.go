@@ -43,7 +43,17 @@ func SetupRouter() *gin.Engine {
 			protected.POST("/auth/logout", handlers.Logout)
 			protected.PUT("/auth/password", handlers.ChangePassword)
 
-			// TODO: Add more routes
+			// System routes
+			system := protected.Group("/system")
+			{
+				system.GET("/status", handlers.GetSystemStatus)
+				system.POST("/start", handlers.StartSingbox)
+				system.POST("/stop", handlers.StopSingbox)
+				system.POST("/restart", handlers.RestartSingbox)
+				system.GET("/version", handlers.GetSystemVersion)
+				system.POST("/upgrade", handlers.UpgradeSingbox)
+				system.GET("/config", handlers.GetGeneratedConfig)
+			}
 		}
 	}
 

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 
 	"singbox-web/internal/api"
+	"singbox-web/internal/api/handlers"
+	"singbox-web/internal/core/singbox"
 	"singbox-web/internal/storage"
 )
 
@@ -27,6 +29,15 @@ func main() {
 	// Initialize database
 	if err := storage.InitDatabase(dataDir); err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
+	}
+
+	// Initialize handlers
+	handlers.InitSystemHandlers(dataDir)
+
+	// Recover from crash
+	manager := singbox.GetManager(dataDir)
+	if err := manager.RecoverFromCrash(); err != nil {
+		log.Printf("Failed to recover: %v", err)
 	}
 
 	// Get port from settings
